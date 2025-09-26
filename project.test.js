@@ -49,3 +49,18 @@ test('Asynchronous data fetch with async/await', async () => {
     const data = await fetchPromise();
     expect(data).toEqual({ name: "John", age: 30 });
 });
+
+test('Mock function example', () => {
+    const mockCallback = jest.fn(x => x + 1);
+    const result = [1, 2, 3].map(mockCallback);
+    expect(mockCallback).toHaveBeenCalledTimes(3);
+    expect(result).toEqual([2, 3, 4]);
+});
+
+test('spying on a method', () => {
+    const video = { play() { return true; } };
+    const spy = jest.spyOn(video, 'play');
+    video.play();
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+});
