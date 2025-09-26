@@ -2,6 +2,7 @@ const sum = require('./sum');
 const createObjectWithAssignment = require('./objectAssignment');
 const returnValue = require('./truthiness');
 const myFunction = require('./throwFunction');
+const { fetchData, fetchPromise } = require('./asynchronous');
 
 test('adds 1 + 2 to equal 3', () => {
     expect(sum(1, 2)).toBe(3);
@@ -22,4 +23,29 @@ test('one is truthy', () => {
 
 test('throws on invalid input', () => {
     expect(() => myFunction("test")).toThrow();
+});
+
+test('Asynchronous data fetch', done => {
+    function callback(data) {
+        try {
+            expect(data).toEqual({ name: "John", age: 30 });
+            done();
+        } catch (error) {
+            done(error);
+        }
+    }
+    fetchData(callback);
+});
+
+test('Asynchronous data fetch with Promise', () => {
+    return expect(fetchPromise()).resolves.toEqual({ name: "John", age: 30 });
+});
+
+test('fetch fails with error', () => {
+    return expect(fetchPromise()).rejects.toThrow('Network error');
+});
+
+test('Asynchronous data fetch with async/await', async () => {
+    const data = await fetchPromise();
+    expect(data).toEqual({ name: "John", age: 30 });
 });
